@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lucasquitan/crud/src/configuration/rest_err"
+	"github.com/lucasquitan/crud/src/configuration/validation"
 	"github.com/lucasquitan/crud/src/model/request"
 )
 
@@ -16,7 +16,7 @@ func CreateUser(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&userRequest); err != nil {
 		log.Printf("Error trying to marshal object, error=%s\n", err.Error())
-		restErr := rest_err.NewBadRequestError("Some fields are incorrect")
+		restErr := validation.ValidateUserError(err)
 
 		c.JSON(restErr.Code, restErr)
 		return
