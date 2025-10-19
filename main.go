@@ -1,24 +1,31 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/lucasquitan/crud/src/configuration/logger"
 	"github.com/lucasquitan/crud/src/controller/routes"
 )
 
+var (
+	PORT = "PORT"
+)
+
 func main() {
+	logger.Info("🚀 Server is running on port " + PORT)
+
 	// Load environment variables
 	err := godotenv.Load()
-
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		logger.Info("Error loading .env file")
 	}
-	fmt.Printf("🚀 Server is running on port %s\n", os.Getenv("PORT"))
 
+	if PORT == "" {
+		PORT = "8080"
+	}
+	
 	// Initialize router
 	router := gin.Default()
 
@@ -28,5 +35,5 @@ func main() {
 	if err := router.Run(":8080"); err != nil {
 		log.Fatal("Error starting server: ", err)
 	}
-	
+
 }
