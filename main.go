@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/lucasquitan/crud/src/configuration/database/mongodob"
 	"github.com/lucasquitan/crud/src/configuration/logger"
 	"github.com/lucasquitan/crud/src/controller"
 	"github.com/lucasquitan/crud/src/controller/routes"
@@ -19,6 +20,9 @@ func main() {
 	if err != nil {
 		logger.Info("Error loading .env file")
 	}
+
+	// Initialize Database
+	mongodob.InitConnection()
 
 	// Initialize router
 	router := gin.Default()
