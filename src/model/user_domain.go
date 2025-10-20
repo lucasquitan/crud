@@ -30,7 +30,7 @@ type userDomain struct {
 }
 
 func (ud *userDomain) GetEmail() string { 
-	return ud.name
+	return ud.email
 }
 
 func (ud *userDomain) GetPassword() string { 

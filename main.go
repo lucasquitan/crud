@@ -6,15 +6,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/lucasquitan/crud/src/configuration/logger"
+	"github.com/lucasquitan/crud/src/controller"
 	"github.com/lucasquitan/crud/src/controller/routes"
-)
-
-var (
-	PORT = "PORT"
+	"github.com/lucasquitan/crud/src/model/service"
 )
 
 func main() {
-	logger.Info("🚀 Server is running on port " + PORT)
+	logger.Info("🚀 Server is running")
 
 	// Load environment variables
 	err := godotenv.Load()
@@ -22,14 +20,14 @@ func main() {
 		logger.Info("Error loading .env file")
 	}
 
-	if PORT == "" {
-		PORT = "8080"
-	}
-	
 	// Initialize router
 	router := gin.Default()
 
-	routes.InitRoutes(&router.RouterGroup)
+	// Initialize dependencies
+	service := service.NewUserDomainService()
+	userController := controller.NewUserControllerInterface(service)
+
+	routes.InitRoutes(&router.RouterGroup, userController)
 
 	// Start server
 	if err := router.Run(":8080"); err != nil {
